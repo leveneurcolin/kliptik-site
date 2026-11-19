@@ -1,0 +1,29 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Connexion TikTok · Kliptik</title><link rel="stylesheet" href="style.css"></head><body><main>
+<h1>Connexion TikTok</h1>
+<div id="ok" hidden>
+<p>Connexion acceptée. Copie ce code et colle-le dans Kliptik (il ne sert qu’une fois et expire vite).</p>
+<p><code id="code"></code></p><p><button id="copier">Copier le code</button></p>
+</div>
+<p id="erreur" hidden>La connexion n’a pas abouti : <code id="raison"></code></p>
+<p id="vide" class="doux">Cette page reçoit la réponse de TikTok après la connexion à Kliptik.</p>
+<p class="doux">Rien n’est envoyé ni enregistré par cette page : le code reste dans ton navigateur.</p>
+<script>
+const q = new URLSearchParams(location.search);
+const code = q.get("code"), err = q.get("error");
+if (code) {
+  document.getElementById("vide").hidden = true;
+  document.getElementById("ok").hidden = false;
+  document.getElementById("code").textContent = code;
+  document.getElementById("copier").onclick = async () => {
+    try { await navigator.clipboard.writeText(code); document.getElementById("copier").textContent = "✓ Copié"; }
+    catch (e) { alert("Sélectionne le code et copie-le à la main."); }
+  };
+} else if (err) {
+  document.getElementById("vide").hidden = true;
+  document.getElementById("erreur").hidden = false;
+  document.getElementById("raison").textContent = (q.get("error_description") || err);
+}
+</script>
+</main></body></html>
